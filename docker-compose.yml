@@ -1,0 +1,47 @@
+version: '3'
+
+volumes:
+  estoque-mysql-data:
+    driver: local
+
+services:
+  app:
+    build: ./php
+    container_name: estoque-app
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - app-mysql
+      - app-redis
+
+  app-mysql:
+    image: mysql:5.7
+    container_name: estoque-mysql
+    volumes:
+      - estoque-mysql-data:/var/lib/mysql
+    ports:
+      - "${EXTERNAL_MYSQL_PORT:-43306}:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=estoque
+      - MYSQL_DATABASE=estoque
+      - MYSQL_USER=estoque
+      - MYSQL_PASSWORD=estoque
+
+  app-redis:
+    image: redis:alpine
+    container_name: estoque-redis
+    expose:
+      - 6379
+
+  app-nginx:
+    build: ./nginx
+    container_name: estoque-nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - "./:/var/www/html"
+    depends_on:
+      - app
+    environment:
+      VIRTUAL_HOST: estoque.local
