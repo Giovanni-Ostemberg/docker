@@ -11,4 +11,4 @@ bash:
 	-	docker-compose exec app bash
 
 migrate:
-	- docker-compose exec api php artisan migrate
+	- docker-compose exec app php artisan migrate
