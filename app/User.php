@@ -37,9 +37,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getImageAttribute()
+    {
+        return $this->image ?? $this->adminlte_image();
+    }
+
     public function adminlte_image()
     {
-        return 'https://picsum.photos/300/300';
+        return $this->image ?? 'https://source.unsplash.com/random/300x300';
     }
 
     public function adminlte_profile_url()
