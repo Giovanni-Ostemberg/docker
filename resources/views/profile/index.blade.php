@@ -16,7 +16,7 @@
 
                     <p class="text-muted text-center">{{ $user->email }}</p>
 
-                    <a href="#" class="btn btn-primary btn-block"><b>Editar</b></a>
+                    <a href="{{ route('profile.edit') }}" class="btn btn-primary btn-block"><b>Editar</b></a>
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -25,3 +25,11 @@
     </div>
     <!-- /.row -->
 @stop
+
+@if(session('message'))
+    @section('js')
+    <script>
+        swal.fire('Sucesso', '{{ session('message') }}', 'success')
+    </script>
+    @stop
+@endif
